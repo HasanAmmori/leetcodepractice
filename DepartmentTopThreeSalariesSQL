@@ -1,0 +1,13 @@
+SELECT 
+    Department.Name AS Department, 
+    salary_stats.Name AS Employee, 
+    salary_stats.Salary AS Salary
+FROM(
+    SELECT  DepartmentId, 
+            Salary, 
+            Name,
+            dense_rank() OVER (PARTITION BY DepartmentId ORDER BY SALARY DESC) AS rank
+    FROM    Employee) AS salary_stats
+JOIN Department
+ON salary_stats.DepartmentId=Department.Id
+WHERE salary_stats.rank < 4;
