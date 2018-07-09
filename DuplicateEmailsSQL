@@ -1,0 +1,17 @@
+SELECT DISTINCT p1.Email
+FROM Person AS p1
+JOIN Person AS p2
+ON p1.Email=p2.Email AND p1.Id!=p2.Id
+
+SELECT Email
+FROM (
+    SELECT Email, COUNT(Email) AS occurance
+    FROM Person
+    GROUP BY Email
+    ) AS email_counts
+WHERE occurance > 1;
+
+SELECT Email
+FROM Person
+GROUP BY Email
+HAVING count(Email)>1;
