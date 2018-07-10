@@ -1,0 +1,15 @@
+CREATE FUNCTION getNthHighestSalary(@N INT) RETURNS INT AS
+BEGIN
+    RETURN (
+        /* Write your T-SQL query statement below. */
+        SELECT TOP 1 HighestSalary FROM(
+            SELECT Salary AS HighestSalary
+            FROM (
+                SELECT  Salary, 
+                dense_rank() OVER (ORDER BY Salary DESC) AS rank
+                FROM Employee) AS salary_stats
+            WHERE salary_stats.rank=@N
+        ) AS data
+        ORDER BY HighestSalary DESC
+    );
+END
