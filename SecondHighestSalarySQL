@@ -1,0 +1,11 @@
+SELECT TOP 1 * FROM (
+    SELECT Salary AS SecondHighestSalary
+    FROM (
+        SELECT  Salary, 
+        rank() OVER (ORDER BY Salary DESC) AS rank
+        FROM Employee) AS salary_stats
+    WHERE salary_stats.rank=2
+    UNION
+    SELECT NULL AS SecondHighestSalary FROM Employee
+) AS data
+ORDER BY SecondHighestSalary DESC;
