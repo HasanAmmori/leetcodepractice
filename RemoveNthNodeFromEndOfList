@@ -1,0 +1,18 @@
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode first = head;
+        ListNode beforeNth = new ListNode(0);
+        beforeNth.next = head;
+        for (int i = 0; i < n-1; i++) {
+            head = head.next;
+        }
+        while (head.next != null) {
+            head = head.next;
+            beforeNth = beforeNth.next;
+        }
+        if (beforeNth.next == first) {
+            return beforeNth.next.next;
+        } else {
+            beforeNth.next = beforeNth.next.next;
+            return first;
+        }
+    }
