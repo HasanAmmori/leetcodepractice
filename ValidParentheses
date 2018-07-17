@@ -1,0 +1,78 @@
+class Solution {
+    public boolean isValid(String s) {
+        char[] chars = s.toCharArray();
+        if (s.length() % 2 == 1 || hasMismatchedParentheses(chars) || !bracersArePaired(chars)){
+            return false;
+        }
+        while(chars.length != (chars=removeInnerValidParts(chars)).length){};
+        if (chars.length < 200) {
+            return isValidShortStr(chars);
+        }
+        return false;
+    }
+    
+    boolean isValidShortStr(char[] chars){
+        double mask = 0;
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]) {
+                case '(' : mask = (mask+1)*2; break;
+                case ')' : mask = (mask/2)-1; break;
+                case '[' : mask = (mask+3)*7; break;
+                case ']' : mask = (mask/7)-3; break;
+                case '{' : mask = (mask+11)*17; break;
+                case '}' : mask = (mask/17)-11; break;
+            }
+        }
+        return mask * mask < 0.001;
+    }
+    
+    char[] removeInnerValidParts(char[] array){
+        int startPos = -1;
+        int middle = -1;
+        for (int i = 0; i < array.length-1 && startPos < 0; i++) {
+            if (openAndCloseBraces(array[i], array[i+1])){
+                middle = i;
+                for (int j = middle; j >= 0 && openAndCloseBraces(array[j], array[middle*2-j+1]); j--) {
+                    startPos = j;
+                }
+            }
+        }
+        if (startPos >= 0 && middle >= 0){
+            int endPos = 2 * middle - startPos+1;
+            char[] newArray = new char[array.length-(endPos-startPos)];
+            System.arraycopy(array, 0, newArray, 0, startPos);
+            System.arraycopy(array, endPos+1, newArray, startPos, array.length - endPos-1);
+            return newArray;
+        } else {
+            return array;
+        }
+    }
+    
+    boolean openAndCloseBraces(char a, char b){
+        return (a =='(' && b == ')') || (a =='[' && b == ']') || (a =='{' && b == '}');
+    }
+    
+    boolean hasMismatchedParentheses(char[] chars){
+        for (int i = 0; i < chars.length-1; i++) {
+            if (chars[i] == '(' && (chars[i+1] == ']' || chars[i+1] == '}')) { return true;}
+            if (chars[i] == '[' && (chars[i+1] == ')' || chars[i+1] == '}')) { return true;}
+            if (chars[i] == '{' && (chars[i+1] == ']' || chars[i+1] == ')')) { return true;}
+        }
+        return false;
+    }
+    
+    boolean bracersArePaired(char[] chars){
+        int mask = 0;
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]) {
+                case '(' : mask += 1; break;
+                case ')' : mask -= 1; break;
+                case '[' : mask += 1 << 8; break;
+                case ']' : mask -= 1 << 8; break;
+                case '{' : mask += 1 <<16; break;
+                case '}' : mask -= 1 << 16; break;
+            }
+        }
+        return mask == 0;
+    }
+}
