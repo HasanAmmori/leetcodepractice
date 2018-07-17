@@ -5,6 +5,8 @@ class Solution {
             return false;
         }
         while(chars.length != (chars=removeInnerValidParts(chars)).length){};
+        //this will work as well, but no fun :(
+        //return new String(chars).trim().isEmpty();
         if (chars.length < 200) {
             return isValidShortStr(chars);
         }
