@@ -1,0 +1,20 @@
+    public static boolean isValidSudoku(char[][] board) {
+        int[][] cols = new int[9][9];
+        int[][] sectorflatten = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            int[] currow = new int[9];
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    int n = Character.getNumericValue(board[i][j]) - 1;
+                    int indx = i/3*3 + j/3;
+                    if (currow[n] > 0 || cols[j][n] > 0 || sectorflatten[indx][n] > 0) {
+                        return false;
+                    }
+                    currow[n] = 1;
+                    cols[j][n] = 1;
+                    sectorflatten[indx][n] = 1; 
+                }
+            }
+        }
+        return true;
+    }
