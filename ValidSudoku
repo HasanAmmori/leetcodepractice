@@ -10,9 +10,7 @@
                     if (currow[n] > 0 || cols[j][n] > 0 || sectorflatten[indx][n] > 0) {
                         return false;
                     }
-                    currow[n] = 1;
-                    cols[j][n] = 1;
-                    sectorflatten[indx][n] = 1; 
+                    currow[n] = cols[j][n] = sectorflatten[indx][n] = 1;
                 }
             }
         }
