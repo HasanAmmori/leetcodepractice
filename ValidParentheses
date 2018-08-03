@@ -1,16 +1,11 @@
 class Solution {
     public boolean isValid(String s) {
         char[] chars = s.toCharArray();
-        if (s.length() % 2 == 1 || hasMismatchedParentheses(chars) || !bracersArePaired(chars)){
+        if (s.length() % 2 == 1 || hasMismatchedBrackets(chars) || !bracketsArePaired(chars)){
             return false;
         }
         while(chars.length != (chars=removeInnerValidParts(chars)).length){};
-        //this will work as well, but no fun :(
-        //return new String(chars).trim().isEmpty();
-        if (chars.length < 200) {
-            return isValidShortStr(chars);
-        }
-        return false;
+        return new String(chars).trim().isEmpty();
     }
     
     boolean isValidShortStr(char[] chars){
@@ -32,9 +27,9 @@ class Solution {
         int startPos = -1;
         int middle = -1;
         for (int i = 0; i < array.length-1 && startPos < 0; i++) {
-            if (openAndCloseBraces(array[i], array[i+1])){
+            if (openAndCloseBrackets(array[i], array[i+1])){
                 middle = i;
-                for (int j = middle; j >= 0 && openAndCloseBraces(array[j], array[middle*2-j+1]); j--) {
+                for (int j = middle; j >= 0 && openAndCloseBrackets(array[j], array[middle*2-j+1]); j--) {
                     startPos = j;
                 }
             }
@@ -50,11 +45,11 @@ class Solution {
         }
     }
     
-    boolean openAndCloseBraces(char a, char b){
+    boolean openAndCloseBrackets(char a, char b){
         return (a =='(' && b == ')') || (a =='[' && b == ']') || (a =='{' && b == '}');
     }
     
-    boolean hasMismatchedParentheses(char[] chars){
+    boolean hasMismatchedBrackets(char[] chars){
         for (int i = 0; i < chars.length-1; i++) {
             if (chars[i] == '(' && (chars[i+1] == ']' || chars[i+1] == '}')) { return true;}
             if (chars[i] == '[' && (chars[i+1] == ')' || chars[i+1] == '}')) { return true;}
@@ -63,7 +58,7 @@ class Solution {
         return false;
     }
     
-    boolean bracersArePaired(char[] chars){
+    boolean bracketsArePaired(char[] chars){
         int mask = 0;
         for (int i = 0; i < chars.length; i++) {
             switch (chars[i]) {
@@ -71,7 +66,7 @@ class Solution {
                 case ')' : mask -= 1; break;
                 case '[' : mask += 1 << 8; break;
                 case ']' : mask -= 1 << 8; break;
-                case '{' : mask += 1 <<16; break;
+                case '{' : mask += 1 << 16; break;
                 case '}' : mask -= 1 << 16; break;
             }
         }
