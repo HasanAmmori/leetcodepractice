@@ -7,7 +7,6 @@ class Solution {
         double base;
         int power;
 
-
         public CacheKey(double base, int power) {
             this.base = base;
             this.power = power;
@@ -29,8 +28,6 @@ class Solution {
             }
             return (int)(this.base - o.base);
         }
-
-        
     }
     
     Map<CacheKey, Double> cache = new TreeMap<>();
