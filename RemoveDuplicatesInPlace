@@ -1,0 +1,29 @@
+public static int removeDuplicates(int[] nums) {
+        if (nums.length < 2) return nums.length;
+        int len = 1;
+        int max = nums[0];
+        for (int i = 1; i < nums.length && max < nums[nums.length-1]; i++) {
+            if (nums[i] > max) {
+                nums[len] = nums[i];
+                len++;
+                max = nums[i];
+            }
+        }
+        return len;
+    }
+    
+    public static int removeDuplicates2(int[] nums) {
+        if (nums.length < 2) return nums.length;
+        int duplicates;
+        int currentPos = 0;
+        int removedElements = 0;
+        for (; currentPos < nums.length - removedElements; currentPos++) {
+            duplicates = 0;
+            while (currentPos+duplicates+1 < nums.length - removedElements && nums[currentPos] == nums[currentPos+duplicates+1]) duplicates++;
+            if (duplicates > 0){
+                System.arraycopy(nums, currentPos+duplicates+1, nums, currentPos+1, nums.length - (currentPos+duplicates+1));
+                removedElements += duplicates;
+            }
+        }
+        return nums.length - removedElements;
+    }
